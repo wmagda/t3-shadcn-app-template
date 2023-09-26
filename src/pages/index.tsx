@@ -1,3 +1,5 @@
+"use client";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -33,7 +35,7 @@ export default function Home() {
   const { toast } = useToast();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
+  const myForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
@@ -41,7 +43,7 @@ export default function Home() {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function myOnSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -69,10 +71,10 @@ export default function Home() {
               Plus Shadcn/UI and nextjs-lambda support
             </h2>
             <Button variant="outline">Button</Button>
-            <Form {...form}>
-              <form onSubmit={void form.handleSubmit(onSubmit)} className="space-y-8">
+            <Form {...myForm}>
+              <form onSubmit={(e) => { e.preventDefault(); void myForm.handleSubmit(myOnSubmit)(e); }} className="space-y-8">
                 <FormField
-                  control={form.control}
+                  control={myForm.control}
                   name="username"
                   render={({ field }) => (
                     <FormItem>
